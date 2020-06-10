@@ -14,9 +14,9 @@ describe('bfs()', function () {
 
   it('should return true if source and target are connected', function () {
     assert.ok(bfs(alphabetsPairs, 'jj', 'aa'));
-    // assert.ok(bfs(alphabetsPairs, 'aa', 'hh'));
-    // assert.ok(bfs(alphabetsPairs, 'hh', 'ii'));
-    // assert.ok(bfs(alphabetsPairs, 'ii', 'ee'));
-    // assert.ok(bfs(alphabetsPairs, 'ee', 'mm'));
+    assert.ok(bfs(alphabetsPairs, 'aa', 'hh'));
+    assert.ok(bfs(alphabetsPairs, 'hh', 'ii'));
+    assert.ok(bfs(alphabetsPairs, 'ii', 'ee'));
+    assert.ok(bfs(alphabetsPairs, 'ee', 'mm'));
   });
 });
