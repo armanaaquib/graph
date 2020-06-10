@@ -19,4 +19,16 @@ describe('bfs()', function () {
     assert.ok(bfs(alphabetsPairs, 'ii', 'ee'));
     assert.ok(bfs(alphabetsPairs, 'ee', 'mm'));
   });
+
+  it('should return true if it is connected to itself', function () {
+    assert.ok(bfs(alphabetsPairs, 'aa', 'aa'));
+  });
+
+  it('should return false if it is not connected to itself', function () {
+    assert.strictEqual(bfs(alphabetsPairs, 'zz', 'zz'), false);
+  });
+
+  it('should return false if edge is not present', function () {
+    assert.strictEqual(bfs(alphabetsPairs, 'xx', 'xx'), false);
+  });
 });

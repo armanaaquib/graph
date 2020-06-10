@@ -23,21 +23,21 @@ const createAdjacencyList = (pairs) => {
 const bfs = (pairs, source, target) => {
   const adjacencyList = createAdjacencyList(pairs);
 
-  let toVisit = [source];
+  let toVisit = adjacencyList[source] ? adjacencyList[source] : [];
   const visited = new Set();
 
   while (toVisit.length != 0) {
-    const edge = toVisit.shift();
+    const node = toVisit.shift();
 
-    if (edge === target) {
+    if (node === target) {
       return true;
     }
 
-    visited.add(edge);
+    visited.add(node);
 
-    const neighbors = adjacencyList[edge];
+    const neighbors = adjacencyList[node];
     const unvisitedNeighbors = neighbors
-      ? neighbors.filter((edge) => !(edge in toVisit || visited.has(edge)))
+      ? neighbors.filter((node) => !(node in toVisit || visited.has(node)))
       : [];
 
     toVisit = toVisit.concat(unvisitedNeighbors);
