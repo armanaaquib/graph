@@ -5,19 +5,16 @@
 // Should return true.
 
 const createAdjacencyList = (pairs) => {
-  const adjacencyList = {};
+  return pairs.reduce((adjacencyList, pair) => {
+    const [from, to] = pair;
 
-  for (let idx = 0; idx < pairs.length; idx++) {
-    const [from, to] = pairs[idx];
-
-    if (from in adjacencyList) {
-      adjacencyList[from].push(to);
-    } else {
-      adjacencyList[from] = [to];
+    if (!(from in adjacencyList)) {
+      adjacencyList[from] = [];
     }
-  }
 
-  return adjacencyList;
+    adjacencyList[from].push(to);
+    return adjacencyList;
+  }, {});
 };
 
 const bfs = (pairs, source, target) => {
