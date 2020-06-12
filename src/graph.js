@@ -20,10 +20,10 @@ const createAdjacencyList = (pairs) => {
 const bfs = (pairs, source, target) => {
   const adjacencyList = createAdjacencyList(pairs);
 
-  let toVisit = adjacencyList[source] ? adjacencyList[source] : [];
+  const toVisit = adjacencyList[source] ? adjacencyList[source] : [];
   const visited = new Set();
 
-  while (toVisit.length != 0) {
+  while (toVisit.length !== 0) {
     const node = toVisit.shift();
 
     if (node === target) {
@@ -32,15 +32,16 @@ const bfs = (pairs, source, target) => {
 
     visited.add(node);
 
-    const neighbors = adjacencyList[node];
-    const unvisitedNeighbors = neighbors
-      ? neighbors.filter((node) => !(node in toVisit || visited.has(node)))
-      : [];
+    const neighbors = adjacencyList[node] ? adjacencyList[node] : [];
 
-    toVisit = toVisit.concat(unvisitedNeighbors);
+    neighbors.forEach((node) => {
+      if (!(toVisit.includes(node) || visited.has(node))) {
+        toVisit.push(node);
+      }
+    });
   }
 
   return false;
 };
 
-module.exports = { bfs };
+module.exports = { createAdjacencyList, bfs };

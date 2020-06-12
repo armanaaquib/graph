@@ -2,12 +2,13 @@
   "name": "graph-armanaaquib",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "nyc mocha"
+    "test": "nyc mocha",
+    "start": "node main.js"
   },
   "repository": {
     "type": "git",
