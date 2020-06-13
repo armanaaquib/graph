@@ -46,11 +46,7 @@ const bfs = (pairs, source, target) => {
 
 const _findPath = (graph, source, target, visited) => {
   visited.add(source);
-  const neighbors = graph[source];
-
-  if (neighbors === undefined) {
-    return undefined;
-  }
+  const neighbors = graph[source] ? graph[source] : [];
 
   for (let idx = 0; idx < neighbors.length; idx++) {
     const node = neighbors[idx];
