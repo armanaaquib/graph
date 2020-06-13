@@ -44,4 +44,35 @@ const bfs = (pairs, source, target) => {
   return false;
 };
 
-module.exports = { createAdjacencyList, bfs };
+const _findPath = (graph, source, target, visited) => {
+  visited.add(source);
+  const neighbors = graph[source];
+
+  if (neighbors === undefined) {
+    return undefined;
+  }
+
+  for (let idx = 0; idx < neighbors.length; idx++) {
+    const node = neighbors[idx];
+
+    if (node === target) {
+      return [source, target];
+    }
+
+    if (!visited.has(node)) {
+      const path = _findPath(graph, node, target, visited);
+      if (path) return [source, ...path];
+    }
+  }
+
+  return undefined;
+};
+
+const findPath = (pairs, source, target) => {
+  const graph = createAdjacencyList(pairs);
+  const visited = new Set();
+
+  return _findPath(graph, source, target, visited);
+};
+
+module.exports = { createAdjacencyList, bfs, findPath };
