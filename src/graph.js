@@ -55,11 +55,11 @@ const _findPath = (graph, source, target, visited) => {
 
     if (!visited.has(node)) {
       const path = _findPath(graph, node, target, visited);
-      if (path) return [source, ...path];
+      if (path.length > 0) return [source, ...path];
     }
   }
 
-  return undefined;
+  return [];
 };
 
 const findPath = (pairs, source, target) => {
@@ -82,7 +82,7 @@ const _findShortestPathDFS = (graph, source, target, visited) => {
 
     if (!visited.has(node)) {
       const path = _findShortestPathDFS(graph, node, target, new Set(visited));
-      if (path) paths.push([source, ...path]);
+      if (path.length > 0) paths.push([source, ...path]);
     }
   }
 
@@ -92,7 +92,7 @@ const _findShortestPathDFS = (graph, source, target, visited) => {
     );
   }
 
-  return undefined;
+  return [];
 };
 
 const findShortestPathDFS = (pairs, source, target) => {

@@ -38,8 +38,8 @@ describe('findPath()', function () {
     assert.deepStrictEqual(findPath(alphabetsPairs, 'aa', 'aa'), ['aa', 'aa']);
   });
 
-  it('should return undefined if node is not connected to itself', function () {
-    assert.deepStrictEqual(findPath(alphabetsPairs, 'zz', 'zz'), undefined);
+  it('should return [] if node is not connected to itself', function () {
+    assert.deepStrictEqual(findPath(alphabetsPairs, 'zz', 'zz'), []);
   });
 
   it('should return path if node is not directly connected', function () {
@@ -55,13 +55,13 @@ describe('findPath()', function () {
     assert.deepStrictEqual(findPath(alphabetsPairs, 'aa', 'll'), exp_path);
   });
 
-  it('should return undefined if node is not connected', function () {
-    assert.deepStrictEqual(findPath(alphabetsPairs, 'bb', 'jj'), undefined);
-    assert.deepStrictEqual(findPath(alphabetsPairs, 'mm', 'jj'), undefined);
+  it('should return [] if node is not connected', function () {
+    assert.deepStrictEqual(findPath(alphabetsPairs, 'bb', 'jj'), []);
+    assert.deepStrictEqual(findPath(alphabetsPairs, 'mm', 'jj'), []);
   });
 
-  it('should return undefined if edge is not present', function () {
-    assert.strictEqual(findPath(alphabetsPairs, 'xx', 'xx'), undefined);
+  it('should return [] if edge is not present', function () {
+    assert.deepStrictEqual(findPath(alphabetsPairs, 'xx', 'xx'), []);
   });
 });
 
@@ -73,11 +73,8 @@ describe('findShortestPathDFS()', function () {
     ]);
   });
 
-  it('should return undefined if node is not connected to itself', function () {
-    assert.deepStrictEqual(
-      findShortestPathDFS(alphabetsPairs, 'zz', 'zz'),
-      undefined
-    );
+  it('should return [] if node is not connected to itself', function () {
+    assert.deepStrictEqual(findShortestPathDFS(alphabetsPairs, 'zz', 'zz'), []);
   });
 
   it('should return path if node is not directly connected', function () {
@@ -102,21 +99,12 @@ describe('findShortestPathDFS()', function () {
     );
   });
 
-  it('should return undefined if node is not connected', function () {
-    assert.deepStrictEqual(
-      findShortestPathDFS(alphabetsPairs, 'bb', 'jj'),
-      undefined
-    );
-    assert.deepStrictEqual(
-      findShortestPathDFS(alphabetsPairs, 'mm', 'jj'),
-      undefined
-    );
+  it('should return [] if node is not connected', function () {
+    assert.deepStrictEqual(findShortestPathDFS(alphabetsPairs, 'bb', 'jj'), []);
+    assert.deepStrictEqual(findShortestPathDFS(alphabetsPairs, 'mm', 'jj'), []);
   });
 
-  it('should return undefined if edge is not present', function () {
-    assert.strictEqual(
-      findShortestPathDFS(alphabetsPairs, 'xx', 'xx'),
-      undefined
-    );
+  it('should return [] if edge is not present', function () {
+    assert.deepStrictEqual(findShortestPathDFS(alphabetsPairs, 'xx', 'xx'), []);
   });
 });
