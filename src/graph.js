@@ -71,4 +71,38 @@ const findPath = (pairs, source, target) => {
   return _findPath(graph, source, target, visited);
 };
 
-module.exports = { createAdjacencyList, bfs, findPath };
+const _findShortestPathDFS = (graph, source, target, visited) => {
+  visited.add(source);
+  const neighbors = graph[source] ? graph[source] : [];
+
+  const paths = [];
+  for (let idx = 0; idx < neighbors.length; idx++) {
+    const node = neighbors[idx];
+
+    if (node === target) {
+      return [source, target];
+    }
+
+    if (!visited.has(node)) {
+      const path = _findShortestPathDFS(graph, node, target, new Set(visited));
+      if (path) paths.push([source, ...path]);
+    }
+  }
+
+  if (paths.length > 0) {
+    return paths.reduce((path1, path2) =>
+      path1.length <= path2.length ? path1 : path2
+    );
+  }
+
+  return undefined;
+};
+
+const findShortestPathDFS = (pairs, source, target) => {
+  const graph = createAdjacencyList(pairs);
+  const visited = new Set();
+
+  return _findShortestPathDFS(graph, source, target, visited);
+};
+
+module.exports = { createAdjacencyList, bfs, findPath, findShortestPathDFS };
