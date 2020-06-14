@@ -48,9 +48,7 @@ const _findPath = (graph, source, target, visited) => {
   visited.add(source);
   const neighbors = graph[source] ? graph[source] : [];
 
-  for (let idx = 0; idx < neighbors.length; idx++) {
-    const node = neighbors[idx];
-
+  for (const node of neighbors) {
     if (node === target) {
       return [source, target];
     }
@@ -73,12 +71,11 @@ const findPath = (pairs, source, target) => {
 
 const _findShortestPathDFS = (graph, source, target, visited) => {
   visited.add(source);
+
   const neighbors = graph[source] ? graph[source] : [];
-
   const paths = [];
-  for (let idx = 0; idx < neighbors.length; idx++) {
-    const node = neighbors[idx];
 
+  for (const node of neighbors) {
     if (node === target) {
       return [source, target];
     }
