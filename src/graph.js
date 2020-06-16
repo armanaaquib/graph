@@ -20,7 +20,7 @@ const createAdjacencyList = (pairs) => {
 const bfs = (pairs, source, target) => {
   const adjacencyList = createAdjacencyList(pairs);
 
-  const toVisit = adjacencyList[source] ? adjacencyList[source] : [];
+  const toVisit = adjacencyList[source] || [];
   const visited = new Set();
 
   while (toVisit.length !== 0) {
@@ -46,7 +46,7 @@ const bfs = (pairs, source, target) => {
 
 const _findPath = (graph, source, target, visited) => {
   visited.add(source);
-  const neighbors = graph[source] ? graph[source] : [];
+  const neighbors = graph[source] || [];
 
   for (const node of neighbors) {
     if (node === target) {
@@ -72,7 +72,7 @@ const findPath = (pairs, source, target) => {
 const _findShortestPathDFS = (graph, source, target, visited) => {
   visited.add(source);
 
-  const neighbors = graph[source] ? graph[source] : [];
+  const neighbors = graph[source] || [];
   const paths = [];
 
   for (const node of neighbors) {
