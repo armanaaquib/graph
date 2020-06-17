@@ -12,7 +12,7 @@ const bft = (pairs, source) => {
     console.log(node);
     visited.add(node);
 
-    const neighbors = adjacencyList[node] ? adjacencyList[node] : [];
+    const neighbors = adjacencyList[node] || [];
     neighbors.forEach((node) => {
       if (!(toVisit.includes(node) || visited.has(node))) {
         toVisit.push(node);
@@ -21,14 +21,14 @@ const bft = (pairs, source) => {
   }
 };
 
-const _dft = (graph, node, visited) => {
+const _dftRec = (graph, node, visited) => {
   console.log(node);
   visited.add(node);
 
-  const neighbors = graph[node] ? graph[node] : [];
+  const neighbors = graph[node] || [];
   neighbors.forEach((node) => {
     if (!visited.has(node)) {
-      _dft(graph, node, visited);
+      _dftRec(graph, node, visited);
     }
   });
 };
@@ -36,7 +36,28 @@ const _dft = (graph, node, visited) => {
 const dftRec = (pairs, source) => {
   const adjacencyList = createAdjacencyList(pairs);
 
-  _dft(adjacencyList, source, new Set());
+  _dftRec(adjacencyList, source, new Set());
 };
 
-module.exports = { bft, dftRec };
+const dft = (pairs, source) => {
+  const adjacencyList = createAdjacencyList(pairs);
+
+  let toVisit = [source];
+  const visited = new Set();
+
+  while (toVisit.length != 0) {
+    const node = toVisit.shift();
+
+    console.log(node);
+    visited.add(node);
+
+    const neighbors = adjacencyList[node] || [];
+    const unvisitedNeighbors = neighbors.filter(
+      (node) => !(toVisit.includes(node) || visited.has(node))
+    );
+
+    toVisit = unvisitedNeighbors.concat(toVisit);
+  }
+};
+
+module.exports = { bft, dftRec, dft };

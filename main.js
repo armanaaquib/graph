@@ -1,4 +1,4 @@
-const { bft, dftRec } = require('./src/traversals');
+const { bft, dftRec, dft } = require('./src/traversals');
 
 const main = () => {
   const pairs = [
@@ -15,6 +15,9 @@ const main = () => {
   bft(pairs, 'A');
 
   console.log('dftRec');
+  dftRec(pairs, 'A');
+
+  console.log('dft');
   dftRec(pairs, 'A');
 };
 
