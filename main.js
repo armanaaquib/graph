@@ -1,4 +1,4 @@
-const { bft, dftRec, dft } = require('./src/traversals');
+const { bft, dftRec, dft, bftGen, dftGen } = require('./src/traversals');
 
 const main = () => {
   const pairs = [
@@ -14,11 +14,21 @@ const main = () => {
   console.log('bft');
   bft(pairs, 'A');
 
+  console.log('bftGen');
+  for (node of bftGen(pairs, 'A')) {
+    console.log(node);
+  }
+
   console.log('dftRec');
   dftRec(pairs, 'A');
 
   console.log('dft');
-  dftRec(pairs, 'A');
+  dft(pairs, 'A');
+
+  console.log('dftGen');
+  for (node of dftGen(pairs, 'A')) {
+    console.log(node);
+  }
 };
 
 main();

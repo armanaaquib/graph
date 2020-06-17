@@ -52,12 +52,50 @@ const dft = (pairs, source) => {
     visited.add(node);
 
     const neighbors = adjacencyList[node] || [];
-    const unvisitedNeighbors = neighbors.filter(
-      (node) => !(toVisit.includes(node) || visited.has(node))
-    );
+    const unvisitedNeighbors = neighbors.filter((node) => !visited.has(node));
 
     toVisit = unvisitedNeighbors.concat(toVisit);
   }
 };
 
-module.exports = { bft, dftRec, dft };
+const bftGen = function* (pairs, source) {
+  const adjacencyList = createAdjacencyList(pairs);
+
+  let toVisit = [source];
+  const visited = new Set();
+
+  while (toVisit.length != 0) {
+    const node = toVisit.shift();
+
+    yield node;
+    visited.add(node);
+
+    const neighbors = adjacencyList[node] || [];
+    const unvisitedNeighbors = neighbors.filter(
+      (node) => !(toVisit.includes(node) || visited.has(node))
+    );
+
+    toVisit = toVisit.concat(unvisitedNeighbors);
+  }
+};
+
+const dftGen = function* (pairs, source) {
+  const adjacencyList = createAdjacencyList(pairs);
+
+  let toVisit = [source];
+  const visited = new Set();
+
+  while (toVisit.length != 0) {
+    const node = toVisit.shift();
+
+    yield node;
+    visited.add(node);
+
+    const neighbors = adjacencyList[node] || [];
+    const unvisitedNeighbors = neighbors.filter((node) => !visited.has(node));
+
+    toVisit = unvisitedNeighbors.concat(toVisit);
+  }
+};
+
+module.exports = { bft, dftRec, dft, bftGen, dftGen };
