@@ -1,6 +1,12 @@
 const assert = require('assert');
 const fs = require('fs');
-const { bfs, findPath, findShortestPathDFS } = require('../src/graph');
+const {
+  bfs,
+  findPath,
+  findShortestPathDFS,
+  dijkstra,
+  findShortestPathDijkstra,
+} = require('../src/graph');
 
 const alphabetsPairs = JSON.parse(
   fs.readFileSync('./test/data/alphabetsPairs.json', 'utf8')
@@ -106,5 +112,111 @@ describe('findShortestPathDFS()', function () {
 
   it('should return [] if edge is not present', function () {
     assert.deepStrictEqual(findShortestPathDFS(alphabetsPairs, 'xx', 'xx'), []);
+  });
+});
+
+describe('dijkstra', function () {
+  const graph = {
+    A: [
+      ['B', 5],
+      ['C', 8],
+    ],
+    B: [
+      ['A', 5],
+      ['C', 3],
+      ['D', 1],
+      ['E', 2],
+    ],
+    C: [
+      ['A', 8],
+      ['B', 3],
+      ['D', 1],
+    ],
+    D: [
+      ['C', 1],
+      ['F', 4],
+      ['B', 1],
+    ],
+    E: [
+      ['B', 2],
+      ['F', 2],
+    ],
+    F: [
+      ['E', 2],
+      ['D', 4],
+    ],
+  };
+
+  it('should return all shortest path', function () {
+    const exp_graph = {
+      A: { dist: 0, parent: null },
+      B: { dist: 5, parent: 'A' },
+      C: { dist: 7, parent: 'D' },
+      D: { dist: 6, parent: 'B' },
+      E: { dist: 7, parent: 'B' },
+      F: { dist: 9, parent: 'E' },
+    };
+    assert.deepStrictEqual(dijkstra(graph, 'A'), exp_graph);
+  });
+
+  it('should return all shortest path', function () {
+    const exp_graph = {
+      A: { dist: 5, parent: 'B' },
+      B: { dist: 0, parent: null },
+      C: { dist: 2, parent: 'D' },
+      D: { dist: 1, parent: 'B' },
+      E: { dist: 2, parent: 'B' },
+      F: { dist: 4, parent: 'E' },
+    };
+    assert.deepStrictEqual(dijkstra(graph, 'B'), exp_graph);
+  });
+});
+
+describe('findShortestPathDijkstra', function () {
+  const graph = {
+    A: [
+      ['B', 5],
+      ['C', 8],
+    ],
+    B: [
+      ['A', 5],
+      ['C', 3],
+      ['D', 1],
+      ['E', 2],
+    ],
+    C: [
+      ['A', 8],
+      ['B', 3],
+      ['D', 1],
+    ],
+    D: [
+      ['C', 1],
+      ['F', 4],
+      ['B', 1],
+    ],
+    E: [
+      ['B', 2],
+      ['F', 2],
+    ],
+    F: [
+      ['E', 2],
+      ['D', 4],
+    ],
+  };
+
+  it('should return shortest path', function () {
+    const exp = {
+      path: ['A', 'B', 'E', 'F'],
+      dist: 9,
+    };
+    assert.deepStrictEqual(findShortestPathDijkstra(graph, 'A', 'F'), exp);
+  });
+
+  it('should return shortest path with dest', function () {
+    const exp = {
+      path: ['D', 'B', 'E'],
+      dist: 3,
+    };
+    assert.deepStrictEqual(findShortestPathDijkstra(graph, 'D', 'E'), exp);
   });
 });

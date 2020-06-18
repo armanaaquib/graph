@@ -102,4 +102,70 @@ const findShortestPathDFS = (pairs, source, target) => {
   return _findShortestPathDFS(graph, source, target, visited);
 };
 
-module.exports = { createAdjacencyList, bfs, findPath, findShortestPathDFS };
+const findUnvisitedMin = (sp, toVisit) => {
+  let minDist = Infinity;
+  let minDistNode = null;
+
+  for (node in sp) {
+    if (toVisit.has(node) && sp[node].dist < minDist) {
+      minDistNode = node;
+      minDist = node.dist;
+    }
+  }
+
+  return minDistNode;
+};
+
+const initSp = (graph) => {
+  return Object.keys(graph).reduce((sp, node) => {
+    sp[node] = { dist: Infinity, parent: null };
+    return sp;
+  }, {});
+};
+
+const dijkstra = (graph, source) => {
+  const sp = initSp(graph);
+  sp[source].dist = 0;
+
+  const toVisit = new Set(Object.keys(graph));
+
+  while (toVisit.size !== 0) {
+    const node = findUnvisitedMin(sp, toVisit);
+    const neighbors = graph[node] || [];
+
+    neighbors.forEach((nodeWithDist) => {
+      const [newNode, dist] = nodeWithDist;
+      const newDist = sp[node].dist + dist;
+
+      if (newDist < sp[newNode].dist)
+        sp[newNode] = { dist: newDist, parent: node };
+    });
+
+    toVisit.delete(node);
+  }
+
+  return sp;
+};
+
+const findShortestPathDijkstra = (graph, source, dest) => {
+  const sp = dijkstra(graph, source);
+
+  const path = [];
+
+  let currentNode = dest;
+  while (currentNode !== null) {
+    path.unshift(currentNode);
+    currentNode = sp[currentNode].parent;
+  }
+
+  return { path, dist: sp[dest].dist };
+};
+
+module.exports = {
+  createAdjacencyList,
+  bfs,
+  findPath,
+  findShortestPathDFS,
+  dijkstra,
+  findShortestPathDijkstra,
+};
