@@ -6,6 +6,7 @@ const {
   findShortestPathDFS,
   dijkstra,
   findShortestPathDijkstra,
+  primMST,
 } = require('../src/graph');
 
 const alphabetsPairs = JSON.parse(
@@ -115,38 +116,38 @@ describe('findShortestPathDFS()', function () {
   });
 });
 
-describe('dijkstra', function () {
-  const graph = {
-    A: [
-      ['B', 5],
-      ['C', 8],
-    ],
-    B: [
-      ['A', 5],
-      ['C', 3],
-      ['D', 1],
-      ['E', 2],
-    ],
-    C: [
-      ['A', 8],
-      ['B', 3],
-      ['D', 1],
-    ],
-    D: [
-      ['C', 1],
-      ['F', 4],
-      ['B', 1],
-    ],
-    E: [
-      ['B', 2],
-      ['F', 2],
-    ],
-    F: [
-      ['E', 2],
-      ['D', 4],
-    ],
-  };
+const graph = {
+  A: [
+    ['B', 5],
+    ['C', 8],
+  ],
+  B: [
+    ['A', 5],
+    ['C', 3],
+    ['D', 1],
+    ['E', 2],
+  ],
+  C: [
+    ['A', 8],
+    ['B', 3],
+    ['D', 1],
+  ],
+  D: [
+    ['C', 1],
+    ['F', 4],
+    ['B', 1],
+  ],
+  E: [
+    ['B', 2],
+    ['F', 2],
+  ],
+  F: [
+    ['E', 2],
+    ['D', 4],
+  ],
+};
 
+describe('dijkstra', function () {
   it('should return all shortest path', function () {
     const exp_graph = {
       A: { dist: 0, parent: null },
@@ -173,37 +174,6 @@ describe('dijkstra', function () {
 });
 
 describe('findShortestPathDijkstra', function () {
-  const graph = {
-    A: [
-      ['B', 5],
-      ['C', 8],
-    ],
-    B: [
-      ['A', 5],
-      ['C', 3],
-      ['D', 1],
-      ['E', 2],
-    ],
-    C: [
-      ['A', 8],
-      ['B', 3],
-      ['D', 1],
-    ],
-    D: [
-      ['C', 1],
-      ['F', 4],
-      ['B', 1],
-    ],
-    E: [
-      ['B', 2],
-      ['F', 2],
-    ],
-    F: [
-      ['E', 2],
-      ['D', 4],
-    ],
-  };
-
   it('should return shortest path', function () {
     const exp = {
       path: ['A', 'B', 'E', 'F'],
@@ -218,5 +188,55 @@ describe('findShortestPathDijkstra', function () {
       dist: 3,
     };
     assert.deepStrictEqual(findShortestPathDijkstra(graph, 'D', 'E'), exp);
+  });
+});
+
+describe('dijkstra', function () {
+  it('should return all shortest path', function () {
+    const exp_graph = {
+      A: { dist: 0, parent: null },
+      B: { dist: 5, parent: 'A' },
+      C: { dist: 7, parent: 'D' },
+      D: { dist: 6, parent: 'B' },
+      E: { dist: 7, parent: 'B' },
+      F: { dist: 9, parent: 'E' },
+    };
+    assert.deepStrictEqual(dijkstra(graph, 'A'), exp_graph);
+  });
+
+  it('should return all shortest path', function () {
+    const exp_graph = {
+      A: { dist: 5, parent: 'B' },
+      B: { dist: 0, parent: null },
+      C: { dist: 2, parent: 'D' },
+      D: { dist: 1, parent: 'B' },
+      E: { dist: 2, parent: 'B' },
+      F: { dist: 4, parent: 'E' },
+    };
+    assert.deepStrictEqual(dijkstra(graph, 'B'), exp_graph);
+  });
+});
+
+describe('primMST', function () {
+  it('should return minimum spanning tree', function () {
+    const mst = {
+      A: [['B', 5]],
+      B: [
+        ['A', 5],
+        ['D', 1],
+        ['E', 2],
+      ],
+      C: [['D', 1]],
+      D: [
+        ['B', 1],
+        ['C', 1],
+      ],
+      E: [
+        ['B', 2],
+        ['F', 2],
+      ],
+      F: [['E', 2]],
+    };
+    assert.deepStrictEqual(primMST(graph), mst);
   });
 });
