@@ -151,12 +151,12 @@ const primMST = (graph) => {
   return mst;
 };
 
-const findUnvisitedMin = (sp, toVisit) => {
+const findUnvisitedMin = (sp, remainingNodes) => {
   let minDist = Infinity;
   let minDistNode = null;
 
   for (node in sp) {
-    if (toVisit.has(node) && sp[node].dist < minDist) {
+    if (remainingNodes.has(node) && sp[node].dist < minDist) {
       minDistNode = node;
       minDist = node.dist;
     }
@@ -176,21 +176,23 @@ const dijkstra = (graph, source) => {
   const sp = initSp(graph);
   sp[source].dist = 0;
 
-  const toVisit = new Set(Object.keys(graph));
+  const remainingNodes = new Set(Object.keys(graph));
 
-  while (toVisit.size !== 0) {
-    const node = findUnvisitedMin(sp, toVisit);
+  while (remainingNodes.size !== 0) {
+    const node = findUnvisitedMin(sp, remainingNodes);
     const neighbors = graph[node] || [];
 
     neighbors.forEach((nodeWithDist) => {
       const [newNode, dist] = nodeWithDist;
       const newDist = sp[node].dist + dist;
 
-      if (newDist < sp[newNode].dist)
-        sp[newNode] = { dist: newDist, parent: node };
+      if (newDist < sp[newNode].dist) {
+        sp[newNode].dist = newDist;
+        sp[newNode].parent = node;
+      }
     });
 
-    toVisit.delete(node);
+    remainingNodes.delete(node);
   }
 
   return sp;
