@@ -102,50 +102,54 @@ const findShortestPathDFS = (pairs, source, target) => {
   return _findShortestPathDFS(graph, source, target, visited);
 };
 
-const addEdges = (graph, edges, node, visited) => {
+const addEdges = (graph, edges, node) => {
   const neighbors = graph[node] || [];
 
-  for (nodeWithWeight of neighbors) {
-    if (!visited.has(nodeWithWeight[0])) {
-      edges.push([node, ...nodeWithWeight]);
-    }
-  }
+  neighbors.forEach(([nNode, weight]) => {
+    edges.push([node, nNode, weight]);
+  });
 
   return edges;
 };
 
+const findMinEdge = (edges, remainingNodes) => {
+  return edges.reduce(
+    (edge1, edge2) => {
+      if (remainingNodes.has(edge2[1])) {
+        return edge1[2] <= edge2[2] ? edge1 : edge2;
+      }
+
+      return edge1;
+    },
+    [null, null, Infinity]
+  );
+};
+
 const primMST = (graph) => {
   const mst = {};
+
   const nodes = Object.keys(graph);
-  const visited = new Set();
+  const remainingNodes = new Set(nodes.slice(1));
 
-  let edges = [];
   let node = nodes[0];
+  let edges = [];
 
-  while (nodes.length != 0) {
-    visited.add(node);
-    nodes.splice(nodes.indexOf(node), 1);
+  while (remainingNodes.size > 0) {
+    edges = addEdges(graph, edges, node);
 
-    if (nodes.length > 0) {
-      edges = addEdges(graph, edges, node, visited);
+    const minWeightEdge = findMinEdge(edges, remainingNodes);
+    const [node1, node2, weight] = minWeightEdge;
 
-      const minWeightEdge = edges.reduce((edge1, edge2) =>
-        edge1[2] <= edge2[2] ? edge1 : edge2
-      );
+    mst[node1] = mst[node1]
+      ? mst[node1].concat([[node2, weight]])
+      : [[node2, weight]];
 
-      const [node1, node2, weight] = minWeightEdge;
-      mst[node1] = mst[node1]
-        ? mst[node1].concat([[node2, weight]])
-        : [[node2, weight]];
+    mst[node2] = mst[node2]
+      ? mst[node2].concat([[node1, weight]])
+      : [[node1, weight]];
 
-      mst[node2] = mst[node2]
-        ? mst[node2].concat([[node1, weight]])
-        : [[node1, weight]];
-
-      edges.splice(edges.indexOf(minWeightEdge), 1);
-
-      node = node2;
-    }
+    node = node2;
+    remainingNodes.delete(node);
   }
 
   return mst;
