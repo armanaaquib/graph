@@ -102,59 +102,6 @@ const findShortestPathDFS = (pairs, source, target) => {
   return _findShortestPathDFS(graph, source, target, visited);
 };
 
-const addEdges = (graph, edges, node) => {
-  const neighbors = graph[node] || [];
-
-  neighbors.forEach(([nNode, weight]) => {
-    edges.push([node, nNode, weight]);
-  });
-
-  return edges;
-};
-
-const findMinEdge = (edges, remainingNodes) => {
-  return edges.reduce(
-    (edge1, edge2) => {
-      if (remainingNodes.has(edge2[1])) {
-        return edge1[2] <= edge2[2] ? edge1 : edge2;
-      }
-
-      return edge1;
-    },
-    [null, null, Infinity]
-  );
-};
-
-const primMST = (graph) => {
-  const mst = {};
-
-  const nodes = Object.keys(graph);
-  const remainingNodes = new Set(nodes.slice(1));
-
-  let node = nodes[0];
-  let edges = [];
-
-  while (remainingNodes.size > 0) {
-    edges = addEdges(graph, edges, node);
-
-    const minWeightEdge = findMinEdge(edges, remainingNodes);
-    const [node1, node2, weight] = minWeightEdge;
-
-    mst[node1] = mst[node1]
-      ? mst[node1].concat([[node2, weight]])
-      : [[node2, weight]];
-
-    mst[node2] = mst[node2]
-      ? mst[node2].concat([[node1, weight]])
-      : [[node1, weight]];
-
-    node = node2;
-    remainingNodes.delete(node);
-  }
-
-  return mst;
-};
-
 const findUnvisitedMin = (sp, remainingNodes) => {
   let minDist = Infinity;
   let minDistNode = null;
@@ -223,5 +170,4 @@ module.exports = {
   findShortestPathDFS,
   dijkstra,
   findShortestPathDijkstra,
-  primMST,
 };

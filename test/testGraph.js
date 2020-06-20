@@ -6,7 +6,6 @@ const {
   findShortestPathDFS,
   dijkstra,
   findShortestPathDijkstra,
-  primMST,
 } = require('../src/graph');
 
 const alphabetsPairs = JSON.parse(
@@ -214,112 +213,5 @@ describe('dijkstra', function () {
       F: { dist: 4, parent: 'E' },
     };
     assert.deepStrictEqual(dijkstra(graph, 'B'), exp_graph);
-  });
-});
-
-describe('primMST', function () {
-  it('should return minimum spanning tree', function () {
-    const mst = {
-      A: [['B', 5]],
-      B: [
-        ['A', 5],
-        ['D', 1],
-        ['E', 2],
-      ],
-      C: [['D', 1]],
-      D: [
-        ['B', 1],
-        ['C', 1],
-      ],
-      E: [
-        ['B', 2],
-        ['F', 2],
-      ],
-      F: [['E', 2]],
-    };
-    assert.deepStrictEqual(primMST(graph), mst);
-  });
-
-  it('should return minimum spanning tree', function () {
-    const graph = {
-      a: [
-        ['b', 4],
-        ['h', 8],
-      ],
-      b: [
-        ['a', 4],
-        ['c', 8],
-        ['h', 11],
-      ],
-      c: [
-        ['b', 8],
-        ['d', 7],
-        ['f', 4],
-        ['i', 2],
-      ],
-      d: [
-        ['c', 7],
-        ['e', 9],
-        ['f', 14],
-      ],
-      e: [
-        ['d', 9],
-        ['f', 10],
-      ],
-      f: [
-        ['e', 10],
-        ['g', 2],
-        ['d', 14],
-        ['c', 4],
-      ],
-      g: [
-        ['f', 2],
-        ['h', 1],
-        ['i', 6],
-      ],
-      h: [
-        ['g', 1],
-        ['i', 7],
-        ['b', 11],
-        ['a', 8],
-      ],
-      i: [
-        ['g', 6],
-        ['h', 7],
-        ['c', 2],
-      ],
-    };
-
-    const mst = {
-      a: [
-        ['b', 4],
-        ['h', 8],
-      ],
-      b: [['a', 4]],
-      h: [
-        ['a', 8],
-        ['g', 1],
-      ],
-      g: [
-        ['h', 1],
-        ['f', 2],
-      ],
-      f: [
-        ['g', 2],
-        ['c', 4],
-      ],
-      c: [
-        ['f', 4],
-        ['i', 2],
-        ['d', 7],
-      ],
-      i: [['c', 2]],
-      d: [
-        ['c', 7],
-        ['e', 9],
-      ],
-      e: [['d', 9]],
-    };
-    assert.deepStrictEqual(primMST(graph), mst);
   });
 });
