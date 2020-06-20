@@ -102,12 +102,26 @@ const findShortestPathDFS = (pairs, source, target) => {
   return _findShortestPathDFS(graph, source, target, visited);
 };
 
-const findUnvisitedMin = (sp, remainingNodes) => {
+const updateDistances = (distances, graph, node) => {
+  const neighbors = graph[node] || [];
+
+  neighbors.forEach((nodeDist) => {
+    const [nNode, dist] = nodeDist;
+    const nDist = distances[node].dist + dist;
+
+    if (nDist < distances[nNode].dist) {
+      distances[nNode].dist = nDist;
+      distances[nNode].parent = node;
+    }
+  });
+};
+
+const findMinNode = (distances, remainingNodes) => {
   let minDist = Infinity;
   let minDistNode = null;
 
-  for (node in sp) {
-    if (remainingNodes.has(node) && sp[node].dist < minDist) {
+  for (node in distances) {
+    if (remainingNodes.has(node) && distances[node].dist < minDist) {
       minDistNode = node;
       minDist = node.dist;
     }
@@ -116,51 +130,40 @@ const findUnvisitedMin = (sp, remainingNodes) => {
   return minDistNode;
 };
 
-const initSp = (graph) => {
-  return Object.keys(graph).reduce((sp, node) => {
-    sp[node] = { dist: Infinity, parent: null };
-    return sp;
+const initDistance = (graph) => {
+  return Object.keys(graph).reduce((distances, node) => {
+    distances[node] = { dist: Infinity, parent: null };
+    return distances;
   }, {});
 };
 
 const dijkstra = (graph, source) => {
-  const sp = initSp(graph);
-  sp[source].dist = 0;
+  const distances = initDistance(graph);
+  distances[source].dist = 0;
 
   const remainingNodes = new Set(Object.keys(graph));
 
-  while (remainingNodes.size !== 0) {
-    const node = findUnvisitedMin(sp, remainingNodes);
-    const neighbors = graph[node] || [];
-
-    neighbors.forEach((nodeWithDist) => {
-      const [newNode, dist] = nodeWithDist;
-      const newDist = sp[node].dist + dist;
-
-      if (newDist < sp[newNode].dist) {
-        sp[newNode].dist = newDist;
-        sp[newNode].parent = node;
-      }
-    });
-
+  while (remainingNodes.size > 0) {
+    const node = findMinNode(distances, remainingNodes);
+    updateDistances(distances, graph, node);
     remainingNodes.delete(node);
   }
 
-  return sp;
+  return distances;
 };
 
 const findShortestPathDijkstra = (graph, source, dest) => {
-  const sp = dijkstra(graph, source);
+  const distances = dijkstra(graph, source);
 
   const path = [];
-
   let currentNode = dest;
-  while (currentNode !== null) {
+
+  while (currentNode) {
     path.unshift(currentNode);
-    currentNode = sp[currentNode].parent;
+    currentNode = distances[currentNode].parent;
   }
 
-  return { path, dist: sp[dest].dist };
+  return { path, dist: distances[dest].dist };
 };
 
 module.exports = {

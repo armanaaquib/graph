@@ -159,7 +159,7 @@ describe('dijkstra', function () {
     assert.deepStrictEqual(dijkstra(graph, 'A'), exp_graph);
   });
 
-  it('should return all shortest path', function () {
+  it('should return all shortest path for different node', function () {
     const exp_graph = {
       A: { dist: 5, parent: 'B' },
       B: { dist: 0, parent: null },
@@ -173,7 +173,7 @@ describe('dijkstra', function () {
 });
 
 describe('findShortestPathDijkstra', function () {
-  it('should return shortest path', function () {
+  it('should return shortest path with dest', function () {
     const exp = {
       path: ['A', 'B', 'E', 'F'],
       dist: 9,
@@ -181,37 +181,11 @@ describe('findShortestPathDijkstra', function () {
     assert.deepStrictEqual(findShortestPathDijkstra(graph, 'A', 'F'), exp);
   });
 
-  it('should return shortest path with dest', function () {
+  it('should return shortest path with dest for different node', function () {
     const exp = {
       path: ['D', 'B', 'E'],
       dist: 3,
     };
     assert.deepStrictEqual(findShortestPathDijkstra(graph, 'D', 'E'), exp);
-  });
-});
-
-describe('dijkstra', function () {
-  it('should return all shortest path', function () {
-    const exp_graph = {
-      A: { dist: 0, parent: null },
-      B: { dist: 5, parent: 'A' },
-      C: { dist: 7, parent: 'D' },
-      D: { dist: 6, parent: 'B' },
-      E: { dist: 7, parent: 'B' },
-      F: { dist: 9, parent: 'E' },
-    };
-    assert.deepStrictEqual(dijkstra(graph, 'A'), exp_graph);
-  });
-
-  it('should return all shortest path', function () {
-    const exp_graph = {
-      A: { dist: 5, parent: 'B' },
-      B: { dist: 0, parent: null },
-      C: { dist: 2, parent: 'D' },
-      D: { dist: 1, parent: 'B' },
-      E: { dist: 2, parent: 'B' },
-      F: { dist: 4, parent: 'E' },
-    };
-    assert.deepStrictEqual(dijkstra(graph, 'B'), exp_graph);
   });
 });
