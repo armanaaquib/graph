@@ -1,11 +1,9 @@
-const addEdges = (graph, edges, node) => {
+const addEdges = (edges, graph, node) => {
   const neighbors = graph[node] || [];
 
-  neighbors.forEach(([nNode, weight]) => {
-    edges.push([node, nNode, weight]);
+  neighbors.forEach((nodeWeight) => {
+    edges.push([node, ...nodeWeight]);
   });
-
-  return edges;
 };
 
 const findMinEdge = (edges, remainingNodes) => {
@@ -28,21 +26,23 @@ const primMST = (graph) => {
   const remainingNodes = new Set(nodes.slice(1));
 
   let node = nodes[0];
-  let edges = [];
+  const edges = [];
 
   while (remainingNodes.size > 0) {
-    edges = addEdges(graph, edges, node);
+    addEdges(edges, graph, node);
 
     const minWeightEdge = findMinEdge(edges, remainingNodes);
     const [node1, node2, weight] = minWeightEdge;
 
-    mst[node1] = mst[node1]
-      ? mst[node1].concat([[node2, weight]])
-      : [[node2, weight]];
+    if (mst[node1] === undefined) {
+      mst[node1] = [];
+    }
+    mst[node1].push([node2, weight]);
 
-    mst[node2] = mst[node2]
-      ? mst[node2].concat([[node1, weight]])
-      : [[node1, weight]];
+    if (mst[node2] === undefined) {
+      mst[node2] = [];
+    }
+    mst[node2].push([node1, weight]);
 
     node = node2;
     remainingNodes.delete(node);
@@ -90,8 +90,8 @@ const kruskalMST = (pairs) => {
 
   while (mstEdges.length !== noOfNodes - 1) {
     const edge = edges.shift();
-
     const [node1, node2] = edge;
+
     const node1Root = find(set, node1);
     const node2Root = find(set, node2);
 

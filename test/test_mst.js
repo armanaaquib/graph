@@ -1,88 +1,39 @@
 const assert = require('assert');
 const { primMST, kruskalMST } = require('../src/mst');
 
-const graph1 = {
-  A: [
-    ['B', 5],
-    ['C', 8],
-  ],
-  B: [
-    ['A', 5],
-    ['C', 3],
-    ['D', 1],
-    ['E', 2],
-  ],
-  C: [
-    ['A', 8],
-    ['B', 3],
-    ['D', 1],
-  ],
-  D: [
-    ['C', 1],
-    ['F', 4],
-    ['B', 1],
-  ],
-  E: [
-    ['B', 2],
-    ['F', 2],
-  ],
-  F: [
-    ['E', 2],
-    ['D', 4],
-  ],
-};
-
-const graph2 = {
-  a: [
-    ['b', 4],
-    ['h', 8],
-  ],
-  b: [
-    ['a', 4],
-    ['c', 8],
-    ['h', 11],
-  ],
-  c: [
-    ['b', 8],
-    ['d', 7],
-    ['f', 4],
-    ['i', 2],
-  ],
-  d: [
-    ['c', 7],
-    ['e', 9],
-    ['f', 14],
-  ],
-  e: [
-    ['d', 9],
-    ['f', 10],
-  ],
-  f: [
-    ['e', 10],
-    ['g', 2],
-    ['d', 14],
-    ['c', 4],
-  ],
-  g: [
-    ['f', 2],
-    ['h', 1],
-    ['i', 6],
-  ],
-  h: [
-    ['g', 1],
-    ['i', 7],
-    ['b', 11],
-    ['a', 8],
-  ],
-  i: [
-    ['g', 6],
-    ['h', 7],
-    ['c', 2],
-  ],
-};
-
 describe('primMST', function () {
   it('should return minimum spanning tree', function () {
+    const graph = {
+      A: [
+        ['B', 5],
+        ['C', 8],
+      ],
+      B: [
+        ['A', 5],
+        ['C', 3],
+        ['D', 1],
+        ['E', 2],
+      ],
+      C: [
+        ['A', 8],
+        ['B', 3],
+        ['D', 1],
+      ],
+      D: [
+        ['C', 1],
+        ['F', 4],
+        ['B', 1],
+      ],
+      E: [
+        ['B', 2],
+        ['F', 2],
+      ],
+      F: [
+        ['E', 2],
+        ['D', 4],
+      ],
+    };
+
     const mst = {
       A: [['B', 5]],
       B: [
@@ -101,10 +52,59 @@ describe('primMST', function () {
       ],
       F: [['E', 2]],
     };
-    assert.deepStrictEqual(primMST(graph1), mst);
+    assert.deepStrictEqual(primMST(graph), mst);
   });
 
   it('should return minimum spanning tree 2', function () {
+    const graph = {
+      a: [
+        ['b', 4],
+        ['h', 8],
+      ],
+      b: [
+        ['a', 4],
+        ['c', 8],
+        ['h', 11],
+      ],
+      c: [
+        ['b', 8],
+        ['d', 7],
+        ['f', 4],
+        ['i', 2],
+      ],
+      d: [
+        ['c', 7],
+        ['e', 9],
+        ['f', 14],
+      ],
+      e: [
+        ['d', 9],
+        ['f', 10],
+      ],
+      f: [
+        ['e', 10],
+        ['g', 2],
+        ['d', 14],
+        ['c', 4],
+      ],
+      g: [
+        ['f', 2],
+        ['h', 1],
+        ['i', 6],
+      ],
+      h: [
+        ['g', 1],
+        ['i', 7],
+        ['b', 11],
+        ['a', 8],
+      ],
+      i: [
+        ['g', 6],
+        ['h', 7],
+        ['c', 2],
+      ],
+    };
+
     const mst = {
       a: [
         ['b', 4],
@@ -135,7 +135,7 @@ describe('primMST', function () {
       ],
       e: [['d', 9]],
     };
-    assert.deepStrictEqual(primMST(graph2), mst);
+    assert.deepStrictEqual(primMST(graph), mst);
   });
 });
 
