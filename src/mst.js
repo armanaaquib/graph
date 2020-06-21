@@ -7,16 +7,15 @@ const addEdges = (edges, graph, node) => {
 };
 
 const findMinEdge = (edges, remainingNodes) => {
-  return edges.reduce(
-    (edge1, edge2) => {
-      if (remainingNodes.has(edge2[1])) {
-        return edge1[2] <= edge2[2] ? edge1 : edge2;
-      }
+  let minEdge = [null, null, Infinity];
 
-      return edge1;
-    },
-    [null, null, Infinity]
-  );
+  for (const edge of edges) {
+    if (remainingNodes.has(edge[1]) && edge[2] < minEdge[2]) {
+      minEdge = edge;
+    }
+  }
+
+  return minEdge;
 };
 
 const primMST = (graph) => {
@@ -34,14 +33,10 @@ const primMST = (graph) => {
     const minWeightEdge = findMinEdge(edges, remainingNodes);
     const [node1, node2, weight] = minWeightEdge;
 
-    if (mst[node1] === undefined) {
-      mst[node1] = [];
-    }
+    mst[node1] = mst[node1] || [];
     mst[node1].push([node2, weight]);
 
-    if (mst[node2] === undefined) {
-      mst[node2] = [];
-    }
+    mst[node2] = mst[node2] || [];
     mst[node2].push([node1, weight]);
 
     node = node2;
