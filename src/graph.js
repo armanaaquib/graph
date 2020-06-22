@@ -130,18 +130,20 @@ const findMinNode = (distances, remainingNodes) => {
   return minDistNode;
 };
 
-const initDistance = (graph) => {
-  return Object.keys(graph).reduce((distances, node) => {
+const initDistanceFor = (nodes, source) => {
+  const distances = nodes.reduce((distances, node) => {
     distances[node] = { dist: Infinity, parent: null };
     return distances;
   }, {});
+
+  distances[source].dist = 0;
+  return distances;
 };
 
 const dijkstra = (graph, source) => {
-  const distances = initDistance(graph);
-  distances[source].dist = 0;
-
-  const remainingNodes = new Set(Object.keys(graph));
+  const nodes = Object.keys(graph);
+  const distances = initDistanceFor(nodes, source);
+  const remainingNodes = new Set(nodes);
 
   while (remainingNodes.size > 0) {
     const node = findMinNode(distances, remainingNodes);
